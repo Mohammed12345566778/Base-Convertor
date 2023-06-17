@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <link rel="stylesheet" href="css/binairecss.css">
+    <title>Binaire Convert</title>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script type="text/babel">
+        function Selectf({ status,statustofrom, selectvalue }) {
+            
+            return (
+                
+                
+               <select value = {status} onChange={selectvalue}>
+                    <option value="decimal">Decimal (10)</option>
+
+                    <option value="Binary">Binary (2)</option>
+                    <option value="Octa">Octal (8)</option>
+                    <option value="Hexa">Hexadecimal (16)</option>
+
+                </select>
+            );
+        }
+    
+        function App() {
+            const [enter, setenter] = React.useState("");
+            const [result, setresult] = React.useState("");
+            const [error, setError] = React.useState("");
+            const [from, setfromStatus] = React.useState("decimal");
+            const [to, settoStatus] = React.useState("Binary");
+
+            const [afresult, setafresutl] = React.useState("");
+
+            function validateBinaryString(str) {
+                for (let i = 0; i < str.length; i++) {
+                    if (!['0', '1','.'].includes(str[i])) {
+                     return false; // La chaîne de caractères contient un caractère autre que 0 ou 1
+                }
+            }
+
+             return true; // La chaîne de caractères contient uniquement des 0 et des 1
+               }
+               function validateOctaString(str) {
+                   for (let i = 0; i < str.length; i++) {
+                       if (!['0', '1', '2', '3', '4', '5', '6', '7','.'].includes(str[i])) {
+
+                            return false; // La chaîne de caractères contient un caractère autre que 0 ou 1
+                }
+                }
+
+                    return true; // La chaîne de caractères contient uniquement des 0 et des 1
+               }
+               function validateHexaString(str) {
+               for (let i = 0; i < str.length; i++) {
+                  if (!['0', '1', '2', '3', '4', '5', '6', '7','8','9','A','B','C','D','E','F','.','a','b','c','d','e','f'].includes(str[i])) {
+
+                      return false; // La chaîne de caractères contient un caractère autre que 0 ou 1
+                  }
+                }
+
+             return true; // La chaîne de caractères contient uniquement des 0 et des 1
+               }
+            // handle erreur fonction 1
+            function handleErreur(){
+                if(from==="Hexa" && !(validateHexaString(enter))){
+                    return "16";
+                }
+                const parsedInput = Number(enter);
+
+                if(from==="Binary"){
+                     if (!(validateBinaryString(enter))) {
+                       return "2";
+                }}else{
+                    if(from === "decimal"){
+                        if (isNaN(parsedInput)) {
+                        return "10";
+
+                    }
+                    }
+                    if(from==="Octa"){
+                        if (!(validateOctaString(enter))) {
+                            return "8";
+                        }
+
+                    }
+                }
+             
+            }
+            // handle erreur fonction 2
+            function complteErreurHandlter(){
+              
+                if(enter.length>22 && (from !== "Hexa" && from!== "Binaire")){
+                    setError(" large number, Max = 23 Digit !  ");
+                    return true;
+                    
+                }else{
+                    if(enter.length>17 && from === "Hexa"){
+                        setError(" large number, Max = 18 Digit ! ");
+                        return true;
+
+                    }
+
+                }
+                if(caslimit1(enter,".") === false){
+                    setError("Invalid number! Contains multiple decimal points.");
+                    return true;
+                }
+                if(handleErreur()=== "2" || handleErreur()==="8" || handleErreur()==="10"|| handleErreur()==="16"){
+                    if(handleErreur()==="2"){
+                        setError("Invalid input! Please enter numbers in base 2 (0,1)!");
+                        
+
+                    }else{
+                        if(handleErreur()==="10"){
+                            setError("Invalid input! Please enter numbers in base 10 (0...9)!");
+
+                        }
+                        if(handleErreur()==="8"){
+                            setError("Invalid input! Please enter numbers in base 8 (0...7)!");
+
+                        }
+                        if(handleErreur()==="16"){
+                            setError("Invalid input! Please enter numbers in base 16 (0....F)!");
+
+                        }
+
+                    }
+                  setresult("");
+                  setafresutl("");
+                  setenter("");
+                     
+                    return true;}
+                    setError("");
+            }
+               
+    
+           // fonction selfrom pour set le from status valeur (la base qui user enter les valeur ) 
+            function selectfrom(event) {
+                setafresutl("");
+                setresult("");
+                setfromStatus(event.target.value);
+            
+            }
+            // fonction pour set le to status valeur(la base qui on vont le convert a lui)
+            function selectto(event) {
+
+                setafresutl("");
+                setresult("");
+                settoStatus(event.target.value);
+            
+            }
+            // fonction reverse string qui fait l'inverse d'une string , aide pour le convert decimal to any base
+            function reverseString(str) {
+                return str.split("").reverse().join("");
+            }
+            // Button Enter pour afficher le result
+    
+            function keypress(event) {
+                if (event.key === "Enter") {
+                    CalculBinaire();
+                    console.log(result1);
+
+                }
+   
+           
+            }
+            // convert from Any base to Any base
+            function anyToAny(){
+               let  result1 = anyBasetoDecimal();
+
+               
+
+                result1 = decimalToAnyBase(result1) ;
+
+
+
+                return result1;
+
+
+
+                
+            }
+            // set la base selon enter de user
+            function setbase(parm){
+                let base = 2;
+                let status = "";
+                if(parm==="f"){
+                    status =from;
+                    
+                }else{
+                    status = to;
+                }
+
+                if (status === "Octa") {
+                    base = 8;
+                }else{
+                    if (status === "Hexa") {
+                    base = 16;
+                }
+                }
+                return base;
+
+            }
+            // convert Any Base To decimal
+            function anyBasetoDecimal(){
+                let base = Number(setbase("f"));
+                let result1 = parseInt(enter,base);
+                return result1 + handlefloatAny(enter);
+            }
+            function hexadecimalconvert(number){
+                switch (Number(number)) {
+                            case 10:
+                                number = "A";
+                                break;
+                            case 11:
+                                number = "B";
+                                break;
+                            case 12:
+                                number = "C";
+                                break;
+                            case 13:
+                                number = "D";
+                                break;
+                            case 14:
+                                number = "E";
+                                break;
+                            case 15:
+                                number = "F";
+                                break;
+                            
+                        }
+                        return number;
+            }
+            function CA2(param){
+                let enterValeurFrom = from;
+                // a completer ; 
+            }
+            function hexadecimalconvert2(number){
+                
+                    switch (number.toString().toUpperCase()) {
+                            case "A":
+                               number = 10;
+                                break;
+                            case "B":
+                                number = 11;
+                                break;
+                            case "C":
+                                number = 12;
+                                break;
+                            case "D":
+                                number = 13;
+                                break;
+                            case "E":
+                                number = 14;
+                                break;
+                            case "F":
+                                number = 15;
+                                break;
+                        }
+                         
+                        return  number;
+            }
+            // convert Decimal to any base
+            function decimalToAnyBase(parm){
+                let i;
+                if(parm!==""){
+                    i = parm;
+                }else{
+                     i = Number(enter);
+                     parm = enter;
+
+                }
+                let vircule = "";
+                console.log(` the number value after lire la fonction decimal is : ${i}`);
+       
+                let base = Number(setbase("t"));
+
+                let number = 0;
+                let result1 = "";
+    
+                while (parseInt(i) !== 0) {
+                    number = parseInt(i) % Number(base);
+                    if (Number(base) === 16) {
+                        number = hexadecimalconvert(number);
+                     
+                    }
+                    result1 = result1 + number;
+                    i = parseInt(i) / Number(base);
+                }
+                if(result1.toString()===""){
+                    result1 = "0";
+                }
+                result1 = reverseString(result1)+ '.' + handleFloatDec(parm) ;
+                return result1;
+            }
+            // detatil de calc effectue selon la valeur de "From" et "To"
+            function calcDetail(){
+          
+                let result1 = 0;
+                if(from===to){setresult(enter);setafresutl(enter);return;}
+
+                if(from==="decimal"){ result1 = decimalToAnyBase("");}else{
+                    if((from==="Binaire"|| from==="Octa"|| from==="Hexa") && to==="decimal"){
+                         result1= anyBasetoDecimal();
+                    }else{
+                        result1 = anyToAny();
+                    }
+
+                }
+                result1 = afficherChiffre(result1,34);
+
+                setresult(result1);
+                setafresutl(enter);
+                setenter("");
+            }
+            
+        function declageHexa(number){
+            let verification = number.toString().includes(".");
+            if(verification === false){
+                return false;
+            }
+
+            console.log("fonction continue");
+
+            number = number.toString();
+            let i=0;
+            while(number[i].toString() !== "."){
+                i++;
+            }
+            i++;
+            return number.substring(i,number.length);
+        }    
+
+        function handlefloatAny(floatin) {
+            console.log(`the value of floatin in fonction handle float any is : ${floatin}`);
+            if(from ==="Hexa"){
+                return handlefloatAnyHexa(floatin);
+            }
+            console.log(`enter: ${floatin}`);
+            let containVircule = (Number(floatin) - parseInt(floatin)).toFixed(6)  ;
+          
+            console.log(`contain vircule: ${containVircule} `);
+
+            let containVirculeStr = containVircule.toString();
+            console.log(`result of contain vircule: ${containVirculeStr}`);
+
+            if (parseFloat(containVirculeStr) > 0.0) {
+                let returnResult = 0;
+                for (let i = 2; i < containVirculeStr.length; i++) {
+                containVircule = (Math.pow(setbase("f"), -(i-1))) * parseInt(containVirculeStr[i]);
+                returnResult += Number(containVircule);
+
+                 console.log(`contain vircule: ${parseInt(containVirculeStr[i])} , iteration : ${i} result of operation : ${containVircule}  ,result chaque iteration = ${returnResult}`);
+                 }
+                 console.log(`The final Result is : ${returnResult}`)
+                 return returnResult;
+               }
+
+            return 0;
+                
+        }
+        function handlefloatAnyHexa(param){
+               if(declageHexa(param) === false){
+                return 0 ;
+               }
+                param = declageHexa(param);
+                console.log(param);
+                let floatin;
+                let result = 0;
+                console.log(`the containe string length is : ${param.toString().length}`)
+                for(let i = 0;i<param.toString().length;i++){
+                  floatin  = hexadecimalconvert2(param[i]);
+                  result += (Math.pow(16, -(i+1))) * parseInt(floatin);
+                }
+                return Number(result);
+                
+        }
+      
+
+
+            // handle les flaot number dec to any base 
+        function handleFloatDec(floatin) {
+           console.log(`enter : ${floatin}`);
+
+            let containVircule = "0"+"."+declageHexa(floatin);
+            console.log(`result of contain vircule : ${containVircule}`)
+            if (parseFloat(containVircule) > 0.0) {
+                let returnResult = "";
+                let i = 0;
+                while ((Number(containVircule)- parseInt(containVircule)) !== 0) {
+                  // Utilisation d'une valeur fixe à la place de setbase("t")
+                containVircule = Number(setbase("t")) * (parseFloat(containVircule)- parseInt(containVircule));
+                returnResult += parseInt(containVircule);
+                i++;
+             }
+
+                console.log(` dans la boucle : contain vircule : ${Number(containVircule)}, iteration : ${i} , result actuelement = ${returnResult}`);
+            
+             return returnResult;
+
+
+            }
+            return 0;
+  // Inversion de la chaîne de caractères manuellement
+           }
+           function afficherChiffre(paramNumber , nbrChfr){
+            let afficher = "";
+            let i = 0;
+            let j = 0;
+            paramNumber = paramNumber.toString();
+            console.log(` the parametere of function is : ${paramNumber} and the length is : ${paramNumber.toString().length}` )
+            while(i<Number(nbrChfr) && i<paramNumber.length) {
+                afficher += paramNumber[i]; 
+                i++;
+                console.log(afficher);
+
+            }
+            console.log(afficher);
+            return afficher;
+           }
+    
+    
+   
+            // fonction main()
+            function CalculBinaire() {
+                if(enter === ""){
+                    return ;
+                }
+             
+            
+                complteErreurHandlter();
+                if(complteErreurHandlter()===true){
+                    return;
+                }
+                calcDetail();
+            }
+
+            // fonction cas limit vircule
+            function caslimit1(str,vrfStr){
+                let j = 0
+                for(let i = 0; i<str.length;i++){
+                    if(str[i]===vrfStr){
+                        j++;
+                        if(j>1){
+                            // le number contain deux fois cette charactere
+                            return false;
+                        }
+                    }
+                    
+                }
+                return true;
+
+
+            }
+    
+
+ 
+            return (
+                <div>
+                <h1 id="head">Base Converter</h1>
+
+                <div className="content">
+                    <h3>From :</h3>
+                    <Selectf status={from} statustofrom={"From"} selectvalue={selectfrom} />
+                    <h3>To :</h3>
+                    <Selectf status={to} statustofrom={"To"} selectvalue={selectto} />
+                    <button id="switch" onClick={()=>{
+                        let values= to;
+                        settoStatus(from);
+                        setfromStatus(values);
+                        setafresutl("");
+                        setresult("");
+
+                    }}>⇅</button>
+
+                    <br/>
+
+                    <input
+                        type="text"
+                        onKeyPress={keypress}
+                        onChange={(event) => {
+                            setenter(event.target.value);
+                        }}
+                        value={enter}
+                    />
+                    <button id="button" onClick={CalculBinaire}>
+                        ✅Convert
+                    </button>
+                    <button id="Reset" onClick={()=>{
+                        setenter("");
+                        setafresutl("");
+                        setresult("");
+                    }}>❌ Reset</button>
+
+                    <h1 id="erreur">{error}</h1>
+                    <h1 id="decimal"> Input on : {from} ═ {afresult}</h1>
+                    <h1 id="result">
+                        Result on : {to} ═ {result}
+                    </h1>
+                    <br/>
+                </div>
+                </div>
+            );
+        }
+    
+        ReactDOM.render(<App />, document.querySelector("#app"));
+    </script>
+    </div>
+
+</body>
+</html>

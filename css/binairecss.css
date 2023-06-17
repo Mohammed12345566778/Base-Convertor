@@ -1,0 +1,151 @@
+/* binairecss.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+  
+  #app {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1#head {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  h1 span#one,
+  h1 span#two {
+    font-weight: normal;
+  }
+  
+  select {
+    padding: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  #switch {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"] {
+    padding: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  button#button,#Copy {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  h1#erreur {
+    color: red;
+    margin-top: 10px;
+
+  }
+  #Reset{
+    width: 100px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    margin-top: 5px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+
+  }
+  
+  h1#decimal,
+  h1#result {
+    margin-top: 20px;
+    font-weight: normal;
+  }
+  
+  /* Couleurs ajoutées */
+  
+  body {
+    color: #333;
+background-image: url(../images/Untangl_Homepage_Image_1920x1080_V2__coppermoth___1_.jpg);
+background-size: 100%;}
+    
+  
+  #app {
+    background-color: #9ba5c1;
+  }
+  
+  select,
+  input[type="text"] {
+    background-color: #9d8989;
+    color: #333;
+  }
+  
+  button#button,
+  #switch {
+    background-color: #555;
+    color: #fff;
+  }
+  
+  h1#erreur {
+    color: red;
+  }
+  
+  h1#decimal,
+  h1#result {
+    color: #433b3b;
+    padding: 10px;
+    border : 2px solid rgb(121, 121, 148);
+    border-radius: 5px;
+    overflow:auto;
+    max-width: 500px;
+  }
+  /* Style the scrollbar */
+::-webkit-scrollbar {
+  width: 10px; /* width of the scrollbar */
+}
+
+/* Track (background) of the scrollbar */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* color of the track */
+}
+
+/* Handle (thumb) of the scrollbar */
+::-webkit-scrollbar-thumb {
+  background-color: #888; /* color of the handle */
+  border-radius: 5px; /* roundness of the handle */
+}
+
+/* On hover, style the handle */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* color of the handle on hover */
+}
+
+  
